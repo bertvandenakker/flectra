@@ -11,3 +11,8 @@ language: python
 
 python:
   - "3.5"
+
+install:
+  - git clone https://github.com/flectrahq/build-tools.git ${HOME}/build-tools
+  - export PATH=${HOME}/build-tools/travis:${PATH}
+  - travis_install_flectra
