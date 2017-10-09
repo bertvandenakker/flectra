@@ -37,3 +37,6 @@ install:
   - git clone https://github.com/flectrahq/build-tools.git ${HOME}/build-tools
   - export PATH=${HOME}/build-tools/travis:${PATH}
   - travis_install_flectra
+
+script:
+  - travis_test_flectra
