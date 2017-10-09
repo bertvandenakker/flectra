@@ -33,6 +33,7 @@ python:
   - "3.6"
   
 install:
+  - pip install -r requirements.txt		
   - git clone https://github.com/flectrahq/build-tools.git ${HOME}/build-tools
   - export PATH=${HOME}/build-tools/travis:${PATH}
   - travis_install_flectra
