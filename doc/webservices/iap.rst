@@ -9,20 +9,20 @@
 In-App Purchases
 ================
 
-IAP allow providers of ongoing services through Odoo apps to be compensated
+IAP allow providers of ongoing services through Flectra apps to be compensated
 for ongoing service use rather than — and possibly instead of — a sole initial
 purchase.
 
-In that context, Odoo acts mostly as a *broker* between the service user
-(client) and the service provider (Odoo App developer):
+In that context, Flectra acts mostly as a *broker* between the service user
+(client) and the service provider (Flectra App developer):
 
-* users purchase service tokens from Odoo
-* service providers draw tokens from the user's Odoo account
+* users purchase service tokens from Flectra
+* service providers draw tokens from the user's Flectra account
 
 .. attention::
 
     This document is intended for *service providers* and presents the latter,
-    which can be done either via direct JSON-RPC2_ or if you are using Odoo
+    which can be done either via direct JSON-RPC2_ or if you are using Flectra
     using the convenience helpers it provides.
 
 .. image:: flow.png
@@ -34,7 +34,7 @@ In that context, Odoo acts mostly as a *broker* between the service user
 JSON-RPC2_ Transaction API
 ==========================
 
-* The IAP transaction API does not require using Odoo when implementing your
+* The IAP transaction API does not require using Flectra when implementing your
   server gateway, calls are standard JSON-RPC2_.
 * Calls use different *endpoints* but the same *method* on all endpoints
   (``call``).
@@ -63,13 +63,13 @@ JSON-RPC2_ Transaction API
     Transaction identifier, returned by the authorization process and consumed
     by either capturing or cancelling the transaction
 
-.. exception:: odoo.addons.iap.models.iap.NoCreditError
+.. exception:: flectra.addons.iap.models.iap.NoCreditError
 
     Raised during transaction authorization if the credits requested are not
     currently available on the account (either not enough credits or too many
     pending transactions/existing holds).
 
-.. exception:: odoo.addons.iap.models.iap.BadAuthError
+.. exception:: flectra.addons.iap.models.iap.BadAuthError
 
     Raised by any operation to which a service token is required, if the
     service token is invalid.
@@ -94,15 +94,15 @@ Authorize
     :param str description: optional, helps users identify the reason for
                             charges on their accounts.
     :returns: :class:`TransactionToken` if the authorization succeeded.
-    :raises: :class:`~odoo.addons.iap.models.iap.BadAuthError` if the service token is invalid
-    :raises: :class:`~odoo.addons.iap.models.iap.NoCreditError` if the account does
+    :raises: :class:`~flectra.addons.iap.models.iap.BadAuthError` if the service token is invalid
+    :raises: :class:`~flectra.addons.iap.models.iap.NoCreditError` if the account does
     :raises: ``TypeError`` if the ``credit`` value is not an integer
 
 .. rst-class:: doc-aside
 
 .. code-block:: python
 
-    r = requests.post(ODOO + '/iap/1/authorize', json={
+    r = requests.post(FLECTRA + '/iap/1/authorize', json={
         'jsonrpc': '2.0',
         'id': None,
         'method': 'call',
@@ -132,13 +132,13 @@ Capture
 
     :param TransactionToken token:
     :param ServiceKey key:
-    :raises: :class:`~odoo.addons.iap.models.iap.BadAuthError`
+    :raises: :class:`~flectra.addons.iap.models.iap.BadAuthError`
 
 .. rst-class:: doc-aside
 
 .. code-block:: python
 
-    r2 = requests.post(ODOO + '/iap/1/capture', json={
+    r2 = requests.post(FLECTRA + '/iap/1/capture', json={
         'jsonrpc': '2.0',
         'id': None,
         'method': 'call',
@@ -164,13 +164,13 @@ Cancel
 
     :param TransactionToken token:
     :param ServiceKey key:
-    :raises: :class:`~odoo.addons.iap.models.iap.BadAuthError`
+    :raises: :class:`~flectra.addons.iap.models.iap.BadAuthError`
 
 .. rst-class:: doc-aside
 
 .. code-block:: python
 
-    r2 = requests.post(ODOO + '/iap/1/cancel', json={
+    r2 = requests.post(FLECTRA + '/iap/1/cancel', json={
         'jsonrpc': '2.0',
         'id': None,
         'method': 'call',
@@ -183,16 +183,16 @@ Cancel
         # handle cancel error
     # otherwise transaction is cancelled
 
-Odoo Helpers
-============
+Flectra Helpers
+===============
 
-For convenience, if you are implementing your service using Odoo the ``iap``
+For convenience, if you are implementing your service using Flectra the ``iap``
 module provides a few helpers to make IAP flow even simpler:
 
 Charging
 --------
 
-.. class:: odoo.addons.iap.models.iap.charge(env, key, account_token, credit[, description])
+.. class:: flectra.addons.iap.models.iap.charge(env, key, account_token, credit[, description])
 
     A *context manager* for authorizing and automatically capturing or
     cancelling transactions for use in the backend/proxy.
@@ -204,7 +204,7 @@ Charging
     * if the body executes in full without error, captures the transaction
     * otherwise cancels it
 
-    :param odoo.api.Environment env: used to retrieve the ``iap.endpoint``
+    :param flectra.api.Environment env: used to retrieve the ``iap.endpoint``
                                      configuration key
     :param ServiceKey key:
     :param UserToken token:

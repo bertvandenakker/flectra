@@ -8,11 +8,11 @@ import werkzeug.urls
 import requests
 from requests.packages import urllib3
 
-from odoo import api, fields, models, exceptions
+from flectra import api, fields, models, exceptions
 
 _logger = logging.getLogger(__name__)
 
-DEFAULT_ENDPOINT = 'https://iap.odoo.com'
+DEFAULT_ENDPOINT = 'https://iap.flectra.com'
 
 
 #----------------------------------------------------------
