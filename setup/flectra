@@ -5,4 +5,4 @@ __import__('os').environ['TZ'] = 'UTC'
 import flectra
 
 if __name__ == "__main__":
-flectra.cli.main()
+    flectra.cli.main()
